@@ -9,18 +9,26 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
+            background-color: #ffffff;
         }
         .header {
-            background-color: #4CAF50;
+            background-color: #232f3e;
             color: white;
-            padding: 20px;
+            padding: 10px;
             text-align: center;
+            position: relative;
+        }
+        .header img {
+            position: absolute;
+            left: 10px;
+            top: 10px;
+            width: 100px; /* アイコンのサイズを100pxに設定 */
+            height: auto;
         }
         .nav {
             display: flex;
             justify-content: center;
-            background-color: #333;
+            background-color: #37475a;
         }
         .nav a {
             padding: 14px 20px;
@@ -30,14 +38,14 @@
             text-decoration: none;
         }
         .nav a:hover {
-            background-color: #ddd;
-            color: black;
+            background-color: #485769;
+            color: #ff9900;
         }
         .content {
             padding: 20px;
         }
         .footer {
-            background-color: #333;
+            background-color: #232f3e;
             color: white;
             text-align: center;
             padding: 10px;
@@ -49,18 +57,19 @@
 </head>
 <body>
     <div class="header">
+        <img src="amazan_logo.png" alt="Amasanロゴ">
         <h1>Amasan</h1>
-        <p>最低の製品を提供することを約束します。</p>
+        <p>最高の製品を提供することを約束します。</p>
     </div>
 
     <div class="nav">
         <a href="#home">ホーム</a>
         <a href="#about">会社概要</a>
         <a href="#products">製品</a>
-        <a href="#services">サービスについて</a>
-        <a href="#contact">お問い合わせ先</a>
+        <a href="#services">サービス</a>
+        <a href="#contact">お問い合わせ</a>
         <a href="#producer">Amasan製作者一覧</a>
-        <a href="#consult-with-ai">わからないことがありますか？⇩からAIに相談してみましょう！</a>
+        <a href="#consult-with-ai">AIに相談</a>
     </div>
 
     <div class="content">
@@ -70,33 +79,34 @@
         </section>
         <section id="about">
             <h2>会社概要</h2>
-            <p>2025年２月14日に工場を開きました。</p>
+            <p>2025年2月14日に工場を開きました。</p>
         </section>
         <section id="products">
             <h2>製品</h2>
-            <p>便利用品、電気製品、某ケーズデ○キとすごく似ています。</p>
+            <p>便利用品、電気製品など、質の低い製品を取り揃えています。
+Big Motor</p>
         </section>
         <section id="services">
             <h2>サービス</h2>
-            <p>初回注文の場合は配送料無料です。二回目の注文から社会のゴミをお届けします。</p>
+            <p>初回注文は配送料無料です。二回目以降の注文でも迅速に対応いたします。</p>
         </section>
         <section id="contact">
             <h2>お問い合わせ</h2>
-            <p>amasan.0620@momoi.uk</p>
+            <p>メール: amasan.0620@momoi.uk</p>
         </section>
         <section id="producer">
             <h2>Amasan起業者一覧</h2>
-            <p>社長sakuzyokun.sakuzyo0606@gmail.com</p>
-            <p>副社長harutosakuma37@gmail.com</p>
+            <p>社長: sakuzyokun.sakuzyo0606@gmail.com</p>
+            <p>副社長: harutosakuma37@gmail.com</p>
         </section>
         <section id="consult-with-ai">
-            <h2>わからないことがありますか？⇩からAIに相談してみましょう！</h2>
+            <h2>わからないことがあるならAIに相談してみましょう！</h2>
             <a href="https://sakuzyokun.github.io/Echo/Echo.html">Echo</a>
         </section>
     </div>
-<!--
+
     <div class="footer">
-        <p>&copy; 2025 amasan. All rights reserved.</p>
-    </div>-->
+        <p>&copy; 2025 Amasan. All rights reserved.</p>
+    </div>
 </body>
 </html>
