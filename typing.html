@@ -2,44 +2,75 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <title>タイピングゲーム</title>
+    <title>寿司打風タイピングゲーム</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
             text-align: center;
-            margin: 20px;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            background-color: #ff6347;
+            color: white;
+            padding: 10px;
+            margin: 0;
+        }
+        #game {
+            margin: 20px auto;
+            width: 80%;
+            max-width: 600px;
+            border: 2px solid #ff6347;
+            background-color: white;
+            padding: 20px;
         }
         #target {
             font-size: 24px;
-            margin-bottom: 20px;
+            margin: 20px 0;
         }
         #inputBox {
             font-size: 24px;
-            padding: 5px;
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+        #score {
+            font-size: 20px;
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
-    <h1>タイピングゲーム</h1>
-    <div id="target">このテキストをタイピングしてください。</div>
-    <input type="text" id="inputBox" placeholder="ここに入力...">
-    <div id="result"></div>
+    <h1>寿司打風タイピングゲーム</h1>
+    <div id="game">
+        <div id="target">寿司打を楽しもう！</div>
+        <input type="text" id="inputBox" placeholder="ここに入力...">
+        <div id="score">スコア: 0</div>
+    </div>
 
     <script>
-        const targetText = "このテキストをタイピングしてください。";
+        const targetText = "寿司打を楽しもう！";
         const targetDiv = document.getElementById('target');
         const inputBox = document.getElementById('inputBox');
-        const resultDiv = document.getElementById('result');
+        const scoreDiv = document.getElementById('score');
+        let score = 0;
 
         inputBox.addEventListener('input', () => {
             const inputText = inputBox.value;
             if (inputText === targetText) {
-                resultDiv.textContent = "正解！";
-                resultDiv.style.color = "green";
-            } else {
-                resultDiv.textContent = "";
+                score += 10;
+                scoreDiv.textContent = "スコア: " + score;
+                inputBox.value = "";
+                // 次のターゲットテキストを設定（ランダムな寿司ネタの名前など）
+                targetDiv.textContent = getRandomSushi();
             }
         });
+
+        function getRandomSushi() {
+            const sushiList = ["まぐろ", "サーモン", "いくら", "たまご", "えび", "ホタテ", "イカ"];
+            return sushiList[Math.floor(Math.random() * sushiList.length)];
+        }
     </script>
 </body>
 </html>
