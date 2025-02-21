@@ -52,4 +52,59 @@
     <div id="levelSelect">
         <h2>レベルを選択してください</h2>
         <button onclick="startGame(30)">簡単 (30秒)</button>
-        <button onclick="startGame
+        <button onclick="startGame(60)">普通 (60秒)</button>
+        <button onclick="startGame(90)">難しい (90秒)</button>
+        <button onclick="startGame(120)">鬼 (120秒)</button>
+        <button onclick="startGame(150)">裏鬼 (150秒)</button>
+    </div>
+    <div id="game" class="hidden">
+        <div id="target">寿司打を楽しもう！</div>
+        <input type="text" id="inputBox" placeholder="ここに入力...">
+        <div id="score">スコア: 0</div>
+        <div id="timer">残り時間: 60秒</div>
+    </div>
+
+    <script>
+        const targetText = "寿司打を楽しもう！";
+        const targetDiv = document.getElementById('target');
+        const inputBox = document.getElementById('inputBox');
+        const scoreDiv = document.getElementById('score');
+        const timerDiv = document.getElementById('timer');
+        let score = 0;
+        let timeLeft;
+        let timer;
+
+        function startGame(duration) {
+            document.getElementById('levelSelect').classList.add('hidden');
+            document.getElementById('game').classList.remove('hidden');
+            score = 0;
+            timeLeft = duration;
+            scoreDiv.textContent = "スコア: " + score;
+            timerDiv.textContent = "残り時間: " + timeLeft + "秒";
+            inputBox.value = "";
+            inputBox.disabled = false;
+            inputBox.focus();
+            targetDiv.textContent = getRandomSushi();
+            startTimer();
+        }
+
+        inputBox.addEventListener('input', () => {
+            const inputText = inputBox.value;
+            if (inputText === targetText) {
+                score += 10;
+                scoreDiv.textContent = "スコア: " + score;
+                inputBox.value = "";
+                targetDiv.textContent = getRandomSushi();
+            }
+        });
+
+        function getRandomSushi() {
+            const sushiList = ["まぐろ", "サーモン", "いくら", "たまご", "えび", "ホタテ", "イカ"];
+            return sushiList[Math.floor(Math.random() * sushiList.length)];
+        }
+
+        function startTimer() {
+            clearInterval(timer);
+            timer = setInterval(() => {
+                timeLeft--;
+                timerDiv.textContent
