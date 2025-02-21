@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <title>寿司タイピングゲーム</title>
+    <title>タイピングゲーム</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -20,18 +20,18 @@
     </style>
 </head>
 <body>
-    <h1>寿司タイピングゲーム</h1>
-    <p id="word-display">ここに寿司の名前が表示されます</p>
+    <h1>タイピングゲーム</h1>
+    <p id="word-display">ここに単語が表示されます</p>
     <input type="text" id="word-input" placeholder="ここに入力してください" />
     <div class="result" id="result"></div>
 
     <script>
-        const sushiWords = ["まぐろ", "サーモン", "えび", "いくら", "たまご", "かっぱ巻き", "うに", "はまち"];
+        const words = ["apple", "banana", "cherry", "date", "elderberry", "fig", "grape", "honeydew"];
         let startTime;
         let currentWord;
 
         function startGame() {
-            currentWord = sushiWords[Math.floor(Math.random() * sushiWords.length)];
+            currentWord = words[Math.floor(Math.random() * words.length)];
             document.getElementById("word-display").textContent = currentWord;
             document.getElementById("word-input").value = "";
             document.getElementById("result").textContent = "";
@@ -44,4 +44,11 @@
                 const endTime = new Date().getTime();
                 const timeTaken = (endTime - startTime) / 1000;
                 document.getElementById("result").textContent = `正解！かかった時間: ${timeTaken.toFixed(2)}秒`;
-                setTimeout(startGame, 2000); // 
+                setTimeout(startGame, 2000); // 2秒後に次の単語を表示
+            }
+        });
+
+        window.onload = startGame;
+    </script>
+</body>
+</html>
