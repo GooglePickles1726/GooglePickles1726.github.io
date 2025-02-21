@@ -8,6 +8,15 @@
             font-family: Arial, sans-serif;
             text-align: center;
         }
+        #sushi {
+            position: absolute;
+            top: 50%;
+            left: 100%;
+            width: 100px;
+            height: 50px;
+            transform: translateY(-50%);
+            animation: moveSushi 5s linear infinite;
+        }
         #word {
             font-size: 2em;
             margin-top: 20px;
@@ -16,45 +25,15 @@
             font-size: 1.5em;
             margin-top: 20px;
         }
+        @keyframes moveSushi {
+            0% {
+                left: 100%;
+            }
+            100% {
+                left: -100px;
+            }
+        }
     </style>
 </head>
 <body>
-    <h1>寿司打タイピング</h1>
-    <div id="word">タイピング</div>
-    <input type="text" id="inputField" autofocus>
-
-    <script>
-        const words = [
-            "さくら", "ねこ", "すし", "たいよう", "パソコン", "ふじさん", "あおぞら", "くだもの", "すもう", "やま", 
-            "せんすいかん", "でんわ", "みらい", "しょうねん", "じょしゅう", "ちゅうごく", "アメリカ", "さかずき", "はなび", 
-            "かんがえ", "けいたい", "きょうかしょ", "せかい", "りんご", "かさ", "さかな", "ほん", "じてんしゃ", "いえ", 
-            "とり", "びょういん", "くるま", "みず", "かみ", "ふうせん", "わに", "えんぴつ", "たべもの", "のうか", 
-            "あさ", "ひる", "ばん", "うみ", "かわ", "もり", "あき", "ふゆ", "はる", "なつ", "でんしゃ", "ひこうき", 
-            "ばす", "たんじょうび", "おいしい", "あたらしい", "ふるい", "かわいい", "おおきい", "ちいさい", "たのしい", 
-            "おもしろい", "むずかしい", "かんたん", "はやい", "おそい", "しずか", "にぎやか", "あかるい", "くらい", 
-            "たかい", "ひくい", "あつい", "さむい", "ふかい", "あさい", "ひろい", "せまい", "あつい", "うれしい", 
-            "かなしい", "あんぜん", "きけん", "たいいく", "がっこう", "せんせい", "がくせい", "ともだち", "かぞく", 
-            "しょうがっこう", "ちゅうがっこう", "こうこう", "だいがく", "けいえい", "しごと", "けんきゅう"
-        ];
-        let currentWord = "";
-        let score = 0;
-
-        function getRandomWord() {
-            return words[Math.floor(Math.random() * words.length)];
-        }
-
-        function setNewWord() {
-            currentWord = getRandomWord();
-            document.getElementById("word").innerText = currentWord;
-            document.getElementById("inputField").value = "";
-        }
-
-        document.getElementById("inputField").addEventListener("input", function() {
-            if (this.value === currentWord) {
-                score++;
-                setNewWord();
-            }
-        });
-
-        setNewWord();
-    </script
+    <h1
