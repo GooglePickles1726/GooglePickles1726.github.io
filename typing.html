@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>タイピングゲーム</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+        #target {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        #inputBox {
+            font-size: 24px;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>タイピングゲーム</h1>
+    <div id="target">このテキストをタイピングしてください。</div>
+    <input type="text" id="inputBox" placeholder="ここに入力...">
+    <div id="result"></div>
+
+    <script>
+        const targetText = "このテキストをタイピングしてください。";
+        const targetDiv = document.getElementById('target');
+        const inputBox = document.getElementById('inputBox');
+        const resultDiv = document.getElementById('result');
+
+        inputBox.addEventListener('input', () => {
+            const inputText = inputBox.value;
+            if (inputText === targetText) {
+                resultDiv.textContent = "正解！";
+                resultDiv.style.color = "green";
+            } else {
+                resultDiv.textContent = "";
+            }
+        });
+    </script>
+</body>
+</html>
