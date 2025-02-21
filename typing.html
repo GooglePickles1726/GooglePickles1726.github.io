@@ -12,13 +12,16 @@
         <div id="level-selection">
             <h2>レベルを選択してください</h2>
             <button onclick="selectLevel('easy')">簡単</button>
-            <button onclick="selectLevel('medium')">中級</button>
+            <button onclick="selectLevel('medium')">普通</button>
             <button onclick="selectLevel('hard')">難しい</button>
+            <button onclick="selectLevel('oni')">鬼</button>
+            <button onclick="selectLevel('ura-oni')">裏鬼</button>
         </div>
         <div id="game" style="display: none;">
-            <div id="word"></div>
+            <div id="sushi-container"></div>
             <input type="text" id="input" placeholder="ここにタイピング..." autofocus>
             <div id="score"></div>
+            <div id="timer"></div>
         </div>
     </div>
     <script src="script.js"></script>
@@ -55,9 +58,26 @@ h1 {
     font-size: 20px;
     cursor: pointer;
 }
-#word {
-    font-size: 36px;
-    margin: 20px 0;
+#sushi-container {
+    position: relative;
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+    border: 1px solid #ddd;
+    margin-top: 20px;
+    background-color: #fff5e6;
+}
+.sushi {
+    position: absolute;
+    width: 80px;
+    height: 50px;
+    background-color: #ff6f61;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    color: white;
 }
 #input {
     padding: 10px;
@@ -65,8 +85,100 @@ h1 {
     width: 80%;
     max-width: 300px;
 }
-#score {
+#score, #timer {
     font-size: 24px;
-    margin-top: 20px;
+    margin-top: 10px;
     color: #007bff;
 }
+const words = {
+    easy: ["寿司", "刺身", "天ぷら", "うどん", "蕎麦"],
+    medium: ["ラーメン", "とんかつ", "たこ焼き", "お好み焼き", "唐揚げ"],
+    hard: ["しゃぶしゃぶ", "すき焼き", "おにぎり", "焼きそば", "餃子"],
+    oni: ["鶏唐揚げ", "豚肉餃子", "海老天ぷら", "豆腐味噌汁", "納豆ごはん"],
+    'ura-oni': ["青森りんご", "新潟日本酒", "和歌山梅酒", "大阪たこ焼き", "京都抹茶"]
+};
+let currentWord = "";
+let score = 0;
+let selectedLevel = "easy";
+let timer;
+let timeLimit = 60; // デフォルトの時間制限（秒）
+
+const wordElement = document.getElementById("word");
+const inputElement = document.getElementById("input");
+const scoreElement = document.getElementById("score");
+const timerElement = document.getElementById("timer");
+const levelSelection = document.getElementById("level-selection");
+const gameContainer = document.getElementById("game");
+const sushiContainer = document.getElementById("sushi-container");
+
+function getRandomWord(level) {
+    const randomIndex = Math.floor(Math.random() * words[level].length);
+    return words[level][randomIndex];
+}
+
+function startGame() {
+    currentWord = getRandomWord(selectedLevel);
+    createSushi(currentWord);
+    inputElement.value = "";
+    startTimer();
+}
+
+function createSushi(word) {
+    const sushi = document.createElement("div");
+    sushi.className = "sushi";
+    sushi.textContent = word;
+    sushi.style.left = "100%";
+    sushiContainer.appendChild(sushi);
+
+    let left = 100;
+
+    const sushiInterval = setInterval(() => {
+        left -= 1;
+        sushi.style.left = left + "%";
+        if (left <= -10) {
+            clearInterval(sushiInterval);
+            sushiContainer.removeChild(sushi);
+            if (sushi.textContent === currentWord) {
+                endGame();
+            }
+        }
+    }, 100);
+}
+
+function startTimer() {
+    let timeRemaining = timeLimit;
+    timerElement.textContent = `タイマー: ${timeRemaining}秒`;
+    timer = setInterval(() => {
+        timeRemaining--;
+        timerElement.textContent = `タイマー: ${timeRemaining}秒`;
+        if (timeRemaining <= 0) {
+            clearInterval(timer);
+            endGame();
+        }
+    }, 1000);
+}
+
+function endGame() {
+    alert(`ゲーム終了！スコア: ${score}`);
+    window.location.reload();
+}
+
+function selectLevel(level) {
+    selectedLevel = level;
+    if (level === "easy") timeLimit = 60;
+    if (level === "medium") timeLimit = 50;
+    if (level === "hard") timeLimit = 40;
+    if (level === "oni") timeLimit = 30;
+    if (level === "ura-oni") timeLimit = 20;
+    levelSelection.style.display = "none";
+    gameContainer.style.display = "block";
+    startGame();
+}
+
+inputElement.addEventListener("input", () => {
+    if (inputElement.value === currentWord) {
+        score++;
+        scoreElement.textContent = `スコア: ${score}`;
+        startGame();
+    }
+});
