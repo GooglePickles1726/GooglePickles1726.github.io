@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <title>タイピングゲーム</title>
+    <title>漢字とひらがなタイピングゲーム</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -20,18 +20,18 @@
     </style>
 </head>
 <body>
-    <h1>タイピングゲーム</h1>
+    <h1>漢字とひらがなタイピングゲーム</h1>
     <p id="word-display">ここに単語が表示されます</p>
     <input type="text" id="word-input" placeholder="ここに入力してください" />
     <div class="result" id="result"></div>
 
     <script>
-        const words = ["apple", "banana", "cherry", "date", "elderberry", "fig", "grape", "honeydew"];
+        const mixedWords = ["朝ごはん", "海のさち", "今日", "桜の花", "田中さん", "夏休み", "広島", "水たまり"];
         let startTime;
         let currentWord;
 
         function startGame() {
-            currentWord = words[Math.floor(Math.random() * words.length)];
+            currentWord = mixedWords[Math.floor(Math.random() * mixedWords.length)];
             document.getElementById("word-display").textContent = currentWord;
             document.getElementById("word-input").value = "";
             document.getElementById("result").textContent = "";
