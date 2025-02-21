@@ -9,9 +9,17 @@
 <body>
     <div class="container">
         <h1>タイピングゲーム</h1>
-        <div id="word"></div>
-        <input type="text" id="input" placeholder="ここにタイピング..." autofocus>
-        <div id="score"></div>
+        <div id="level-selection">
+            <h2>レベルを選択してください</h2>
+            <button onclick="selectLevel('easy')">簡単</button>
+            <button onclick="selectLevel('medium')">中級</button>
+            <button onclick="selectLevel('hard')">難しい</button>
+        </div>
+        <div id="game" style="display: none;">
+            <div id="word"></div>
+            <input type="text" id="input" placeholder="ここにタイピング..." autofocus>
+            <div id="score"></div>
+        </div>
     </div>
     <script src="script.js"></script>
 </body>
