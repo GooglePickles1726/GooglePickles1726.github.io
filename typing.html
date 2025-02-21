@@ -39,6 +39,11 @@
             font-size: 20px;
             margin-top: 20px;
         }
+        #timer {
+            font-size: 20px;
+            margin-top: 10px;
+            color: red;
+        }
     </style>
 </head>
 <body>
@@ -47,6 +52,7 @@
         <div id="target">寿司打を楽しもう！</div>
         <input type="text" id="inputBox" placeholder="ここに入力...">
         <div id="score">スコア: 0</div>
+        <div id="timer">残り時間: 60秒</div>
     </div>
 
     <script>
@@ -54,7 +60,10 @@
         const targetDiv = document.getElementById('target');
         const inputBox = document.getElementById('inputBox');
         const scoreDiv = document.getElementById('score');
+        const timerDiv = document.getElementById('timer');
         let score = 0;
+        let timeLeft = 60;
+        let timer;
 
         inputBox.addEventListener('input', () => {
             const inputText = inputBox.value;
@@ -62,7 +71,6 @@
                 score += 10;
                 scoreDiv.textContent = "スコア: " + score;
                 inputBox.value = "";
-                // 次のターゲットテキストを設定（ランダムな寿司ネタの名前など）
                 targetDiv.textContent = getRandomSushi();
             }
         });
@@ -71,6 +79,23 @@
             const sushiList = ["まぐろ", "サーモン", "いくら", "たまご", "えび", "ホタテ", "イカ"];
             return sushiList[Math.floor(Math.random() * sushiList.length)];
         }
+
+        function startTimer() {
+            timer = setInterval(() => {
+                timeLeft--;
+                timerDiv.textContent = "残り時間: " + timeLeft + "秒";
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    inputBox.disabled = true;
+                    targetDiv.textContent = "ゲーム終了！";
+                    timerDiv.textContent = "タイムアップ！";
+                }
+            }, 1000);
+        }
+
+        window.onload = () => {
+            startTimer();
+        };
     </script>
 </body>
 </html>
