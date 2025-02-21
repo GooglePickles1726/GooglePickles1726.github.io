@@ -19,3 +19,119 @@
         }
         #game, #levelSelect {
             margin: 20px auto;
+            width: 80%;
+            max-width: 600px;
+            border: 2px solid #ff6347;
+            background-color: white;
+            padding: 20px;
+        }
+        #target {
+            font-size: 24px;
+            margin: 20px 0;
+        }
+        #inputBox {
+            font-size: 24px;
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+        #score, #timer {
+            font-size: 20px;
+            margin-top: 10px;
+        }
+        #timer {
+            color: red;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>寿司打風タイピングゲーム</h1>
+    <div id="levelSelect">
+        <h2>レベルを選択してください</h2>
+        <button onclick="startGame(30, '簡単')">簡単 (30秒)</button>
+        <button onclick="startGame(60, '普通')">普通 (60秒)</button>
+        <button onclick="startGame(90, '難しい')">難しい (90秒)</button>
+        <button onclick="startGame(120, '鬼')">鬼 (120秒)</button>
+        <button onclick="startGame(150, '裏鬼')">裏鬼 (150秒)</button>
+    </div>
+    <div id="game" class="hidden">
+        <div id="levelDisplay">レベル: 簡単</div>
+        <div id="target">寿司打を楽しもう！</div>
+        <input type="text" id="inputBox" placeholder="ここに入力...">
+        <div id="score">スコア: 0</div>
+        <div id="timer">残り時間: 60秒</div>
+    </div>
+
+    <script>
+        const targetDiv = document.getElementById('target');
+        const inputBox = document.getElementById('inputBox');
+        const scoreDiv = document.getElementById('score');
+        const timerDiv = document.getElementById('timer');
+        const levelDisplay = document.getElementById('levelDisplay');
+        let score = 0;
+        let timeLeft;
+        let timer;
+        let currentLevel;
+
+        const sushiList = {
+            '簡単': ["まぐろ", "サーモン", "いくら", "たまご", "えび"],
+            '普通': ["かっぱまき", "とろサーモン", "ホタテ", "イカ", "カニ"],
+            '難しい': ["うにいくら", "ねぎとろ", "えんがわ", "ハマチ", "サバ"],
+            '鬼': ["たまご寿司", "しめ鯖", "カリフォルニアロール", "イクラ"],
+            '裏鬼': ["ウナギのかば焼き", "金目鯛", "かっぱ巻き", "トロ握り"]
+        };
+
+        function startGame(duration, level) {
+            document.getElementById('levelSelect').classList.add('hidden');
+            document.getElementById('game').classList.remove('hidden');
+            levelDisplay.textContent = "レベル: " + level;
+            currentLevel = level;
+            score = 0;
+            timeLeft = duration;
+            scoreDiv.textContent = "スコア: " + score;
+            timerDiv.textContent = "残り時間: " + timeLeft + "秒";
+            inputBox.value = "";
+            inputBox.disabled = false;
+            inputBox.focus();
+            targetDiv.textContent = getRandomSushi(level);
+            startTimer();
+        }
+
+        inputBox.addEventListener('input', () => {
+            const inputText = inputBox.value;
+            if (targetDiv.textContent.startsWith(inputText)) {
+                if (inputText === targetDiv.textContent) {
+                    score += 10;
+                    scoreDiv.textContent = "スコア: " + score;
+                    inputBox.value = "";
+                    targetDiv.textContent = getRandomSushi(currentLevel);
+                }
+            } else {
+                inputBox.value = inputBox.value.slice(0, -1); // 最後の文字を削除
+            }
+        });
+
+        function getRandomSushi(level) {
+            const list = sushiList[level];
+            return list[Math.floor(Math.random() * list.length)];
+        }
+
+        function startTimer() {
+            clearInterval(timer);
+            timer = setInterval(() => {
+                timeLeft--;
+                timerDiv.textContent = "残り時間: " + timeLeft + "秒";
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    inputBox.disabled = true;
+                    targetDiv.textContent = "ゲーム終了！";
+                    timerDiv.textContent = "タイムアップ！";
+                }
+            }, 1000);
+        }
+    </script>
+</body>
+</html>
