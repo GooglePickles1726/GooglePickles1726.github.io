@@ -13,7 +13,7 @@
             font-size: 1.2em;
             padding: 10px;
         }
-        .result {
+        .result, .score, .timer {
             font-size: 1.5em;
             margin-top: 20px;
         }
@@ -24,11 +24,16 @@
     <p id="word-display">ここに単語が表示されます</p>
     <input type="text" id="word-input" placeholder="ここに入力してください" />
     <div class="result" id="result"></div>
+    <div class="score" id="score">スコア: 0</div>
+    <div class="timer" id="timer">残り時間: 30秒</div>
 
     <script>
         const mixedWords = ["朝ごはん", "海のさち", "今日", "桜の花", "田中さん", "夏休み", "広島", "水たまり"];
         let startTime;
         let currentWord;
+        let score = 0;
+        let timeLimit = 30;
+        let timerInterval;
 
         function startGame() {
             currentWord = mixedWords[Math.floor(Math.random() * mixedWords.length)];
@@ -36,6 +41,18 @@
             document.getElementById("word-input").value = "";
             document.getElementById("result").textContent = "";
             startTime = new Date().getTime();
+            if (timerInterval) clearInterval(timerInterval);
+            timerInterval = setInterval(updateTimer, 1000);
+        }
+
+        function updateTimer() {
+            timeLimit--;
+            document.getElementById("timer").textContent = `残り時間: ${timeLimit}秒`;
+            if (timeLimit === 0) {
+                clearInterval(timerInterval);
+                document.getElementById("result").textContent = "タイムオーバー！";
+                document.getElementById("word-input").disabled = true;
+            }
         }
 
         document.getElementById("word-input").addEventListener("input", function() {
@@ -44,6 +61,8 @@
                 const endTime = new Date().getTime();
                 const timeTaken = (endTime - startTime) / 1000;
                 document.getElementById("result").textContent = `正解！かかった時間: ${timeTaken.toFixed(2)}秒`;
+                score++;
+                document.getElementById("score").textContent = `スコア: ${score}`;
                 setTimeout(startGame, 2000); // 2秒後に次の単語を表示
             }
         });
