@@ -3,137 +3,134 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>文字変換ツール</title>
+    <title>風変換ツール</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+            font-family: 'Noto Sans JP', sans-serif;
+            text-align: center;
             background-color: #f0f0f0;
+            transition: background-color 0.5s;
         }
-        #converter {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+        h1 {
+            margin-top: 20px;
         }
-        input, button, select {
+
+        #inputText {
+            width: 80%;
+            height: 100px;
+            margin-top: 20px;
+            font-size: 16px;
+        }
+
+        #conversionType {
+            width: 80%;
             margin-top: 10px;
-            width: 100%;
+            font-size: 16px;
+        }
+
+        #outputText {
+            width: 80%;
+            margin: 20px auto;
+            font-size: 18px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            background-color: #fff;
             padding: 10px;
+            border-radius: 5px;
+        }
+
+        @media screen and (max-width: 600px) {
+            #inputText, #conversionType, #outputText {
+                width: 95%;
+            }
         }
     </style>
 </head>
 <body>
-    <div id="converter">
-        <h1>文字変換ツール</h1>
-        <input type="text" id="inputText" placeholder="テキストを入力してください">
-        <select id="conversionType">
-            <option value="uppercase">大文字に変換</option>
-            <option value="katakana">ひらがなをカタカナに変換</option>
-            <option value="hiragana">カタカナをひらがなに変換</option>
-            <option value="halfwidth">半角に変換</option>
-            <option value="katakanaHalfwidth">カタカナ半角に変換</option>
-            <option value="romajiToKatakana">ローマ字をカタカナに変換</option>
-            <option value="translate">英語を日本語に翻訳</option>
-        </select>
-        <button onclick="convertText()">変換</button>
-        <p id="outputText"></p>
-    </div>
+    <h1>風変換ツール</h1>
+    <textarea id="inputText" placeholder="テキストを入力してください" oninput="convertText()"></textarea>
+    <select id="conversionType" onchange="convertText()">
+        <option value="original">そのまま表示</option>
+        <option value="toKatakana">ひらがなをカタカナに変換</option>
+        <option value="toHiragana">カタカナをひらがなに変換</option>
+        <option value="toRomaji">ローマ字に変換</option>
+        <option value="toHalfwidth">全角を半角に変換</option>
+        <option value="toFullwidth">半角を全角に変換</option>
+        <option value="reverse">文字を逆順に表示</option>
+        <option value="toKatakanaHalfwidth">カタカナを半角カタカナに変換</option>
+    </select>
+    <div id="outputText"></div>
 
+    <script src="https://unpkg.com/wanakana@4.0.2/dist/wanakana.min.js"></script>
     <script>
-        function convertText() {
-            const inputText = document.getElementById('inputText').value;
-            const conversionType = document.getElementById('conversionType').value;
-            let outputText = '';
+        document.addEventListener('DOMContentLoaded', function() {
+            document.body.style.backgroundColor = getRandomColor();
+        });
 
-            switch (conversionType) {
-                case 'uppercase':
-                    outputText = inputText.toUpperCase();
+        function convertText() {
+            const input = document.getElementById('inputText').value;
+            const type = document.getElementById('conversionType').value;
+            let output = '';
+
+            switch(type) {
+                case 'original':
+                    output = input;
                     break;
-                case 'katakana':
-                    outputText = toKatakana(inputText);
+                case 'toKatakana':
+                    output = wanakana.toKatakana(input);
                     break;
-                case 'hiragana':
-                    outputText = toHiragana(inputText);
+                case 'toHiragana':
+                    output = wanakana.toHiragana(input);
                     break;
-                case 'halfwidth':
-                    outputText = toHalfwidth(inputText);
+                case 'toRomaji':
+                    output = wanakana.toRomaji(input);
                     break;
-                case 'katakanaHalfwidth':
-                    outputText = toKatakanaHalfwidth(inputText);
+                case 'toHalfwidth':
+                    output = toHalfwidth(input);
                     break;
-                case 'romajiToKatakana':
-                    outputText = romajiToKatakana(inputText);
+                case 'toFullwidth':
+                    output = toFullwidth(input);
                     break;
-                case 'translate':
-                    outputText = translateToJapanese(inputText);
+                case 'reverse':
+                    output = reverseText(input);
+                    break;
+                case 'toKatakanaHalfwidth':
+                    output = toHalfwidth(wanakana.toKatakana(input));
                     break;
                 default:
-                    outputText = inputText;
+                    output = input;
             }
 
-            document.getElementById('outputText').innerText = outputText;
-        }
-
-        function toKatakana(text) {
-            return text.replace(/[\u3041-\u3096]/g, function(match) {
-                return String.fromCharCode(match.charCodeAt(0) + 0x60);
-            });
-        }
-
-        function toHiragana(text) {
-            return text.replace(/[\u30a1-\u30f6]/g, function(match) {
-                return String.fromCharCode(match.charCodeAt(0) - 0x60);
-            });
+            document.getElementById('outputText').textContent = output;
         }
 
         function toHalfwidth(text) {
-            return text.replace(/[\uff01-\uff5e]/g, function(match) {
-                return String.fromCharCode(match.charCodeAt(0) - 0xfee0);
-            }).replace(/\u3000/g, ' ');
+            return text
+                .replace(/[！-～]/g, function(ch) {
+                    return String.fromCharCode(ch.charCodeAt(0) - 0xFEE0);
+                })
+                .replace(/\u3000/g, ' ')
+                .replace(/[ァ-ヶ]/g, function(ch) {
+                    return String.fromCharCode(ch.charCodeAt(0) - 0x60).normalize("NFKC");
+                });
         }
 
-        function toKatakanaHalfwidth(text) {
-            return text.normalize("NFKC");
+        function toFullwidth(text) {
+            return text
+                .replace(/[!-~]/g, function(ch) {
+                    return String.fromCharCode(ch.charCodeAt(0) + 0xFEE0);
+                })
+                .replace(/ /g, '\u3000');
         }
 
-        function translateToJapanese(text) {
-            const dictionary = {
-                "hello": "こんにちは",
-                "world": "世界",
-            };
-            return dictionary[text.toLowerCase()] || text;
+        function reverseText(text) {
+            return text.split('').reverse().join('');
         }
 
-        function romajiToKatakana(text) {
-            const romajiMap = {
-                "a": "ア", "i": "イ", "u": "ウ", "e": "エ", "o": "オ",
-                "ka": "カ", "ki": "キ", "ku": "ク", "ke": "ケ", "ko": "コ",
-                "sa": "サ", "shi": "シ", "su": "ス", "se": "セ", "so": "ソ",
-                "ta": "タ", "chi": "チ", "tsu": "ツ", "te": "テ", "to": "ト",
-                "na": "ナ", "ni": "ニ", "nu": "ヌ", "ne": "ネ", "no": "ノ",
-                "ha": "ハ", "hi": "ヒ", "fu": "フ", "he": "ヘ", "ho": "ホ",
-                "ma": "マ", "mi": "ミ", "mu": "ム", "me": "メ", "mo": "モ",
-                "ya": "ヤ", "yu": "ユ", "yo": "ヨ",
-                "ra": "ラ", "ri": "リ", "ru": "ル", "re": "レ", "ro": "ロ",
-                "wa": "ワ", "wo": "ヲ", "n": "ン"
-            };
-            let result = "";
-            let buffer = "";
-            for (let char of text.toLowerCase()) {
-                buffer += char;
-                if (romajiMap[buffer]) {
-                    result += romajiMap[buffer];
-                    buffer = "";
-                } else if (buffer.length > 2) {
-                    result += buffer[0];
-                    buffer = buffer.slice(1);
-                }
-            }
-            return result + buffer;
+        function getRandomColor() {
+            const colors = ['#FFCCCC', '#CCFFCC', '#CCCCFF', '#FFFFCC', '#CCFFFF', '#FFCCFF'];
+            return colors[Math.floor(Math.random() * colors.length)];
         }
     </script>
 </body>
