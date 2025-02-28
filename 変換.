@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文字変換ツール</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+        #converter {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        input, button {
+            margin-top: 10px;
+            width: 100%;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="converter">
+        <h1>文字変換ツール</h1>
+        <input type="text" id="inputText" placeholder="テキストを入力してください">
+        <select id="conversionType">
+            <option value="uppercase">大文字に変換</option>
+            <option value="katakana">ひらがなをカタカナに変換</option>
+            <option value="halfwidth">半角に変換</option>
+            <option value="translate">英語を日本語に翻訳</option>
+        </select>
+        <button onclick="convertText()">変換</button>
+        <p id="outputText"></p>
+    </div>
+
+    <script>
+        function convertText() {
+            const inputText = document.getElementById('inputText').value;
+            const conversionType = document.getElementById('conversionType').value;
+            let outputText = '';
+
+            switch (conversionType) {
+                case 'uppercase':
+                    outputText = inputText.toUpperCase();
+                    break;
+                case 'katakana':
+                    outputText = toKatakana(inputText);
+                    break;
+                case 'halfwidth':
+                    outputText = toHalfwidth(inputText);
+                    break;
+                case 'translate':
+                    // 簡単な翻訳の例（実際の翻訳には外部APIを使用することをお勧めします）
+                    outputText = translateToJapanese(inputText);
+                    break;
+                default:
+                    outputText = inputText;
+            }
+
+            document.getElementById('outputText').innerText = outputText;
+        }
+
+        function toKatakana(text) {
+            return text.replace(/[\u3041-\u3096]/g, function(match) {
+                return String.fromCharCode(match.charCodeAt(0) + 0x60);
+            });
+        }
+
+        function toHalfwidth(text) {
+            return text.replace(/[\uff01-\uff5e]/g, function(match) {
+                return String.fromCharCode(match.charCodeAt(0) - 0xfee0);
+            }).replace(/\u3000/g, ' ');
+        }
+
+        function translateToJapanese(text) {
+            // 簡単な翻訳例
+            const dictionary = {
+                "hello": "こんにちは",
+                "world": "世界",
+                // 他の翻訳も追加可能
+            };
+            return dictionary[text.toLowerCase()] || text;
+        }
+    </script>
+</body>
+</html>
