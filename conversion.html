@@ -40,8 +40,15 @@
             border-radius: 5px;
         }
 
+        #clearButton {
+            margin-top: 10px;
+            font-size: 16px;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+
         @media screen and (max-width: 600px) {
-            #inputText, #conversionType, #outputText {
+            #inputText, #conversionType, #outputText, #clearButton {
                 width: 95%;
             }
         }
@@ -52,86 +59,4 @@
     <textarea id="inputText" placeholder="テキストを入力してください" oninput="convertText()"></textarea>
     <select id="conversionType" onchange="convertText()">
         <option value="original">そのまま表示</option>
-        <option value="toKatakana">ひらがなをカタカナに変換</option>
-        <option value="toHiragana">カタカナをひらがなに変換</option>
-        <option value="toRomaji">ローマ字に変換</option>
-        <option value="toHalfwidth">全角を半角に変換</option>
-        <option value="toFullwidth">半角を全角に変換</option>
-        <option value="reverse">文字を逆順に表示</option>
-        <option value="toKatakanaHalfwidth">カタカナを半角カタカナに変換</option>
-    </select>
-    <div id="outputText"></div>
-
-    <script src="https://unpkg.com/wanakana@4.0.2/dist/wanakana.min.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            document.body.style.backgroundColor = getRandomColor();
-        });
-
-        function convertText() {
-            const input = document.getElementById('inputText').value;
-            const type = document.getElementById('conversionType').value;
-            let output = '';
-
-            switch(type) {
-                case 'original':
-                    output = input;
-                    break;
-                case 'toKatakana':
-                    output = wanakana.toKatakana(input);
-                    break;
-                case 'toHiragana':
-                    output = wanakana.toHiragana(input);
-                    break;
-                case 'toRomaji':
-                    output = wanakana.toRomaji(input);
-                    break;
-                case 'toHalfwidth':
-                    output = toHalfwidth(input);
-                    break;
-                case 'toFullwidth':
-                    output = toFullwidth(input);
-                    break;
-                case 'reverse':
-                    output = reverseText(input);
-                    break;
-                case 'toKatakanaHalfwidth':
-                    output = toHalfwidth(wanakana.toKatakana(input));
-                    break;
-                default:
-                    output = input;
-            }
-
-            document.getElementById('outputText').textContent = output;
-        }
-
-        function toHalfwidth(text) {
-            return text
-                .replace(/[！-～]/g, function(ch) {
-                    return String.fromCharCode(ch.charCodeAt(0) - 0xFEE0);
-                })
-                .replace(/\u3000/g, ' ')
-                .replace(/[ァ-ヶ]/g, function(ch) {
-                    return String.fromCharCode(ch.charCodeAt(0) - 0x60).normalize("NFKC");
-                });
-        }
-
-        function toFullwidth(text) {
-            return text
-                .replace(/[!-~]/g, function(ch) {
-                    return String.fromCharCode(ch.charCodeAt(0) + 0xFEE0);
-                })
-                .replace(/ /g, '\u3000');
-        }
-
-        function reverseText(text) {
-            return text.split('').reverse().join('');
-        }
-
-        function getRandomColor() {
-            const colors = ['#FFCCCC', '#CCFFCC', '#CCCCFF', '#FFFFCC', '#CCFFFF', '#FFCCFF'];
-            return colors[Math.floor(Math.random() * colors.length)];
-        }
-    </script>
-</body>
-</html>
+        <option value="toKatakana">ひらがな
