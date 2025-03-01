@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>公式ホームページ</title>
+    <style>
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            transition: background-color 0.5s;
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 1em 0;
+            text-align: center;
+        }
+
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        nav ul li {
+            display: inline;
+            margin: 0 1em;
+        }
+
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        section {
+            margin: 2em 0;
+            padding: 1em;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        footer {
+            text-align: center;
+            padding: 1em 0;
+            background-color: #333;
+            color: #fff;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+        }
+
+        #inputText {
+            width: 80%;
+            height: 100px;
+            margin-top: 20px;
+            font-size: 16px;
+        }
+
+        #conversionType {
+            width: 80%;
+            margin-top: 10px;
+            font-size: 16px;
+        }
+
+        #outputText {
+            width: 80%;
+            margin: 20px auto;
+            font-size: 18px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            background-color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        #clearButton {
+            margin-top: 10px;
+            font-size: 16px;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+
+        @media screen and (max-width: 600px) {
+            #inputText, #conversionType, #outputText, #clearButton {
+                width: 95%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>あなたの名前</h1>
+        <nav>
+            <ul>
+                <li><a href="#about">自己紹介</a></li>
+                <li><a href="#projects">プロジェクト</a></li>
+                <li><a href="#contact">連絡先</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="about">
+        <h2>自己紹介</h2>
+        <p>ここに自己紹介を書いてください。あなたの経歴、スキル、趣味など。</p>
+    </section>
+
+    <section id="projects">
+        <h2>プロジェクト</h2>
+        <ul>
+            <li>プロジェクト1: 詳細説明</li>
+            <li>プロジェクト2: 詳細説明</li>
+            <li>プロジェクト3: 詳細説明</li>
+        </ul>
+    </section>
+
+    <section id="contact">
+        <h2>連絡先</h2>
+        <p>メールアドレス: <a href="mailto:あなたのメール@example.com">あなたのメール@example.com</a></p>
+    </section>
+
+    <section>
+        <h2>文字変換ツール</h2>
+        <textarea id="inputText" placeholder="テキストを入力してください" oninput="convertText()"></textarea>
+        <select id="conversionType" onchange="convertText()">
+            <option value="original">そのまま表示</option>
+            <option value="toKatakana">ひらがなをカタカナに変換</option>
+            <option value="toHiragana">カタカナをひらがなに変換</option>
+            <option value="toRomaji">ローマ字に変換</option>
+            <option value="toHalfwidth">全角を半角に変換</option>
+            <option value="toFullwidth">半角を全角に変換</option>
+            <option value="reverse">文字を逆順に表示</option>
+            <option value="toKatakanaHalfwidth">カタカナを半角カタカナに変換</option>
+        </select>
+        <div id="outputText"></div>
+        <button id="clearButton" onclick="clearText()">クリア</button>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 あなたの名前</p>
+    </footer>
+
+    <script src="https://unpkg.com/wanakana@4.0.2/dist/wanakana.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.body.style.backgroundColor = getRandomColor();
+        });
+
+        function convertText() {
+            const input = document.getElementById('inputText').value;
+            const type = document.getElementById('conversionType').value;
+            let output = '';
+
+            if (!input.trim()) {
+                output = '入力テキストが空です。テキストを入力してください。';
+            } else {
+                switch(type) {
+                    case 'original':
+                        output = input;
+                        break;
+                    case 'toKatakana':
+                        output = wanakana.toKatakana(input);
+                        break;
+                    case 'toHiragana':
+                        output = wanakana.toHiragana(input);
+                        break;
+                    case 'toRomaji':
+                        output = wanakana.toRomaji(input);
+                        break;
+                    case 'toHalfwidth':
+                        output = toHalfwidth(input);
+                        break;
+                    case 'toFullwidth':
+                        output = toFullwidth(input);
+                        break;
+                    case 'reverse':
+                        output = reverseText(input);
+                        break;
+                    case 'toKatakanaHalfwidth':
+                        output = toHalfwidth(wanakana.toKatakana(input));
+                        break;
+                    default:
+                        output = input;
+                }
+            }
+
+            document.getElementById('outputText').textContent = output;
+        }
+
+        function toHalfwidth(text) {
+            return text.replace(/[！-～]/g, function(ch) {
+                return String.fromCharCode(ch.charCodeAt(0) - 0xFEE0);
+            }).replace(/\u3000/g, ' ').replace(/[ァ-ヶ]/g, function(ch) {
+                return String.fromCharCode(ch.charCodeAt(0) - 0x60).normalize("NFKC");
+            });
+        }
+
+        function toFullwidth(text) {
+            return text.replace(/[!-~]/g, function(ch) {
+                return String.fromCharCode(ch.charCodeAt(0) + 0xFEE0);
+            }).replace(/ /g, '\u3000');
+        }
+
+        function reverseText(text) {
+            return text.split('').reverse().join('');
+        }
+
+        function getRandomColor() {
+            const colors = ['#FFCCCC', '#CCFFCC', '#CCCCFF', '#FFFFCC', '#CCFFFF', '#FFCCFF'];
+            return colors[Math.floor(Math.random() * colors.length)];
+        }
+
+        function clearText() {
+            document.getElementById('inputText').value = '';
+            document.getElementById('outputText').textContent = '';
+            document.getElementById('inputText').dispatchEvent(new Event('input')); // テキストエリアのoninputイベントを手動で再度呼び出す
+        }
+    </script>
+</body>
+</html>
